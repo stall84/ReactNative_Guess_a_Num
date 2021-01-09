@@ -7,10 +7,14 @@ import { StyleSheet,
          Keyboard, 
          Alert } from 'react-native';
 
+import DefaultStyles from '../constants/default-styles';
 import Colors from '../constants/colors';
 import Card from '../components/Card';
 import NumberContainer from '../components/NumberContainer';
 import Input from '../components/Input';
+import MainButton from '../components/MainButton';
+import BodyText from '../components/BodyText';          // We created a 'utility' component to merely hold the custom font 
+                                                        // we want to use in all former 'Text' components.
 
 const StartGameScreen = props => {
 
@@ -48,9 +52,11 @@ const StartGameScreen = props => {
     if (confirmed) {
         confirmedOutput = 
         <Card style={styles.confirmContainer}>
-            <Text>You Selected</Text>
+            <BodyText>You Selected</BodyText>
             <NumberContainer>{selectedNumber}</NumberContainer>
-            <Button title="START GAME!" onPress={() => props.onStartGame(selectedNumber)} />
+            <MainButton onPress={() => props.onStartGame(selectedNumber)}>
+                START GAME!
+            </MainButton>
         </Card>
     }
 
@@ -61,7 +67,7 @@ const StartGameScreen = props => {
             <View style={styles.screen}>
                 <Text style={styles.title}>START A NEW GAME!</Text>
                 <Card style={styles.inputContainer}>
-                    <Text>Select a Number</Text>
+                    <Text style={DefaultStyles.bodyText}>Select a Number</Text>
                         <Input style={styles.input} 
                             blurOnSubmit autoCapitalize="none" 
                             autoCorrect={false} 
@@ -89,6 +95,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     title: {
+        fontFamily: 'open-sans-bold',
         fontSize: 20,
         marginVertical: 10,
     },

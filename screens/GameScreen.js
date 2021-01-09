@@ -1,8 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { StyleSheet, Text, View, Button, Alert } from 'react-native';
 
+import { Ionicons } from '@expo/vector-icons';
+
+import DefaultStyles from '../constants/default-styles';
 import NumberContainer from '../components/NumberContainer';
 import Card from '../components/Card';
+import MainButton from '../components/MainButton';
 
 const generateRandomBetween = (min, max, exclude) => {
 
@@ -26,7 +30,7 @@ const GameScreen = props => {
     const currentLow = useRef(1); 
     const currentHigh = useRef(100);   
 
-    const { userChoice, onGameOver } = props;
+    const { userChoice, onGameOver } = props;           // destructure out user's original choice and onGameOver funcion from App.js
 
     useEffect(() => {
         if (currentGuess === userChoice) {
@@ -48,16 +52,25 @@ const GameScreen = props => {
         const nextNumber = generateRandomBetween(currentLow.current, currentHigh.current, currentGuess);
         setCurrentGuess(nextNumber);
         setRounds(currRounds => currRounds + 1)
-    };    
+    };
+    
+    const remindHandler = () => {
+        Alert.alert('You Picked:', `${userChoice}`, [{text: 'Thanks!', style: 'cancel'}])
+    };
 
     return (
         <View style={styles.screen}>
-            <Text>Computer's Guess</Text>
+            <Text style={DefaultStyles.title}>Computer's Guess</Text>
             <NumberContainer>{currentGuess}</NumberContainer>
             <Card style={styles.buttonContainer}>               
-                <Button title="LOWER" onPress={nextGuessHandler.bind(this, 'lower')} />
-                <Button title="GREATER" onPress={nextGuessHandler.bind(this, 'higher')} />
+                <MainButton onPress={nextGuessHandler.bind(this, 'lower')}>
+                    <Ionicons name="md-remove" size={24} color="white" />
+                </MainButton>
+                <MainButton onPress={nextGuessHandler.bind(this, 'higher')}>
+                    <Ionicons name="md-add" size={24} color="white" />
+                </MainButton>
             </Card>
+            <Button title="Remind Me" onPress={remindHandler} />
         </View>
     );
 };
@@ -74,9 +87,9 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-around',
         marginTop: 20,
-        width: 300,
+        width: 320,
         maxWidth: '80%',
-    }
+    },
 });
 
 export default GameScreen;
